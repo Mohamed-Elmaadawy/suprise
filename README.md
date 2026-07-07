@@ -1,12 +1,10 @@
-# 🌸 Donia's Birthday Card
+# 🌸 Surprise
 
-A Japanese-style animated birthday card webpage — お誕生日おめでとう、愛しいドニア!
+A Japanese-style animated webpage.
 
 ## Features
-- Washi-paper card design with sakura branch artwork
-- Falling cherry blossom petals animation
-- Traditional vertical Japanese text (tategaki)
-- Interactive red hanko seal (祝) — click it for a petal burst!
+- Animated card design with decorative artwork
+- Interactive elements — click around!
 
 ## Run it
 Just open `index.html` in any browser. No build steps, no dependencies (fonts load from Google Fonts).
@@ -14,5 +12,5 @@ Just open `index.html` in any browser. No build steps, no dependencies (fonts lo
 ## Publish with GitHub Pages
 1. Push this repo to GitHub
 2. Go to **Settings → Pages**
-3. Under "Source", select the `main` branch and `/ (root)` folder
-4. Your card will be live at `https://<username>.github.io/<repo-name>/`
+3. Under "Source", select the `master` branch and `/ (root)` folder
+4. It will be live at `https://<username>.github.io/<repo-name>/`
