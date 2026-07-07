@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お誕生日おめでとう、ドニア</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Zen+Kurenaihana&family=Kaisei+Decol:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #2b3a55;
+    --indigo-deep: #1c2739;
+    --sakura: #f6cfd8;
+    --sakura-deep: #e8a0b4;
+    --washi: #faf5ef;
+    --gold: #c9a86a;
+    --hanko: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--indigo-deep) 0%, var(--indigo) 55%, #46557a 100%);
+    font-family: 'Shippori Mincho', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 40px 16px;
+    position: relative;
+  }
+
+  /* ---- falling petals ---- */
+  .petal {
+    position: fixed;
+    top: -30px;
+    width: 16px; height: 16px;
+    background: radial-gradient(circle at 30% 30%, #fde6ec, var(--sakura-deep));
+    border-radius: 60% 0 60% 0;
+    opacity: 0.85;
+    pointer-events: none;
+    animation: fall linear infinite, sway ease-in-out infinite alternate;
+    z-index: 1;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(540deg); }
+  }
+  @keyframes sway {
+    from { margin-left: -30px; }
+    to   { margin-left: 30px; }
+  }
+
+  /* ---- card ---- */
+  .card {
+    position: relative;
+    z-index: 2;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(246,207,216,0.35), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(201,168,106,0.12), transparent 45%),
+      var(--washi);
+    max-width: 640px;
+    width: 100%;
+    border-radius: 6px;
+    padding: 64px 48px 56px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    text-align: center;
+    animation: cardIn 1.2s cubic-bezier(.2,.8,.3,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* paper texture lines */
+  .card::before {
+    content: "";
+    position: absolute; inset: 14px;
+    border: 1px solid rgba(43,58,85,0.25);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    letter-spacing: 0.5em;
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-family: 'Kaisei Decol', serif;
+  }
+
+  h1 {
+    font-family: 'Zen Kurenaihana', serif;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    color: var(--indigo);
+    line-height: 1.35;
+    margin-bottom: 8px;
+    animation: fadeUp 1s .3s both;
+  }
+
+  .romaji {
+    font-family: 'Kaisei Decol', serif;
+    font-style: italic;
+    color: #8a7a68;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 36px;
+    animation: fadeUp 1s .5s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* vertical text columns — the signature */
+  .tategaki-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    margin: 12px auto 40px;
+    animation: fadeUp 1s .7s both;
+  }
+  .tategaki {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 1.15rem;
+    line-height: 2.4;
+    color: var(--indigo);
+    letter-spacing: 0.35em;
+    height: 260px;
+  }
+  .tategaki.accent { color: var(--hanko); font-weight: 700; }
+
+  .message-en {
+    font-family: 'Kaisei Decol', serif;
+    color: #5a5248;
+    font-size: 1rem;
+    line-height: 1.9;
+    max-width: 420px;
+    margin: 0 auto 44px;
+    animation: fadeUp 1s .9s both;
+  }
+
+  /* hanko seal */
+  .hanko {
+    width: 78px; height: 78px;
+    margin: 0 auto;
+    background: var(--hanko);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--washi);
+    writing-mode: vertical-rl;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    box-shadow: inset 0 0 0 3px var(--washi), inset 0 0 0 5px var(--hanko), 0 4px 14px rgba(192,57,43,0.4);
+    transform: rotate(-4deg);
+    animation: stamp .5s 1.4s cubic-bezier(.3,1.6,.6,1) both;
+    cursor: pointer;
+    transition: transform .3s;
+  }
+  .hanko:hover { transform: rotate(0deg) scale(1.06); }
+  @keyframes stamp {
+    from { opacity: 0; transform: rotate(-4deg) scale(2.2); }
+    to   { opacity: 1; transform: rotate(-4deg) scale(1); }
+  }
+
+  .hanko-label {
+    margin-top: 14px;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: #9a8d7c;
+    animation: fadeUp 1s 1.7s both;
+  }
+
+  /* sakura branch corner */
+  .branch {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 180px;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 520px) {
+    .card { padding: 52px 24px 44px; }
+    .tategaki-wrap { gap: 22px; }
+    .tategaki { font-size: 1rem; height: 220px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .petal { display: none; }
+    * { animation-duration: 0.01s !important; animation-delay: 0s !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <svg class="branch" viewBox="0 0 180 160" xmlns="http://www.w3.org/2000/svg">
+    <path d="M180 10 C130 30, 90 60, 60 110" stroke="#6b4f3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M120 45 C105 60, 95 75, 92 92" stroke="#6b4f3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <g fill="#e8a0b4">
+      <circle cx="60" cy="110" r="10"/>
+      <circle cx="92" cy="92" r="8"/>
+      <circle cx="120" cy="45" r="9"/>
+      <circle cx="75" cy="78" r="7"/>
+      <circle cx="145" cy="28" r="7"/>
+    </g>
+    <g fill="#f6cfd8">
+      <circle cx="60" cy="110" r="5"/>
+      <circle cx="92" cy="92" r="4"/>
+      <circle cx="120" cy="45" r="4.5"/>
+      <circle cx="75" cy="78" r="3.5"/>
+      <circle cx="145" cy="28" r="3.5"/>
+    </g>
+    <g fill="#c9a86a">
+      <circle cx="60" cy="110" r="1.8"/>
+      <circle cx="92" cy="92" r="1.5"/>
+      <circle cx="120" cy="45" r="1.6"/>
+      <circle cx="75" cy="78" r="1.3"/>
+      <circle cx="145" cy="28" r="1.3"/>
+    </g>
+  </svg>
+
+  <p class="eyebrow">✿ 特別な日 ✿</p>
+
+  <h1>お誕生日おめでとう</h1>
+  <p class="romaji">Otanjoubi omedetou, itoshii Donia</p>
+
+  <div class="tategaki-wrap">
+    <p class="tategaki accent">愛しいドニアへ</p>
+    <p class="tategaki">花のように咲き</p>
+    <p class="tategaki">星のように輝け</p>
+  </div>
+
+  <p class="message-en">
+    To dearest Donia — may this new year of your life bloom like the sakura
+    and shine like the stars. And above all, may this finally be the year
+    you finish that master's degree... I believe in you. Mostly. 😂🎓
+  </p>
+
+  <div class="hanko" title="心" onclick="burst()">祝</div>
+  <p class="hanko-label">心を込めて</p>
+</div>
+
+<script>
+  // falling petals
+  const N = 18;
+  for (let i = 0; i < N; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (7 + Math.random() * 8) + 's, ' + (2 + Math.random() * 2) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's, 0s';
+    const s = 10 + Math.random() * 12;
+    p.style.width = s + 'px';
+    p.style.height = s + 'px';
+    document.body.appendChild(p);
+  }
+
+  // petal burst when the seal is tapped
+  function burst() {
+    for (let i = 0; i < 14; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.left = (45 + Math.random() * 10) + 'vw';
+      p.style.top = '50vh';
+      p.style.animationDuration = (2 + Math.random() * 2) + 's, 1s';
+      p.style.animationDelay = '0s, 0s';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4000);
+    }
+  }
+</script>
+
+</body>
+</html>
