@@ -271,17 +271,25 @@
     document.body.appendChild(p);
   }
 
-  // petal burst when the seal is tapped
+  // petal burst when the seal is tapped, originating from the hanko itself
   function burst() {
-    for (let i = 0; i < 14; i++) {
+    const hanko = document.querySelector('.hanko');
+    const rect = hanko.getBoundingClientRect();
+    const originLeftVw = (rect.left + rect.width / 2) / window.innerWidth * 100;
+    const originTopPx = rect.top + rect.height / 2;
+    for (let i = 0; i < 28; i++) {
       const p = document.createElement('div');
       p.className = 'petal';
-      p.style.left = (45 + Math.random() * 10) + 'vw';
-      p.style.top = '50vh';
-      p.style.animationDuration = (2 + Math.random() * 2) + 's, 1s';
+      p.style.left = (originLeftVw - 6 + Math.random() * 12) + 'vw';
+      p.style.top = originTopPx + 'px';
+      const dur = 1.6 + Math.random() * 2.2;
+      p.style.animationDuration = dur + 's, 1s';
       p.style.animationDelay = '0s, 0s';
+      const s = 8 + Math.random() * 16;
+      p.style.width = s + 'px';
+      p.style.height = s + 'px';
       document.body.appendChild(p);
-      setTimeout(() => p.remove(), 4000);
+      setTimeout(() => p.remove(), (dur + 1) * 1000);
     }
   }
 </script>
