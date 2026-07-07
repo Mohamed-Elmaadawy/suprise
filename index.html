@@ -252,7 +252,7 @@
     you finish that master's degree... I believe in you. Mostly. 😂🎓
   </p>
 
-  <div class="hanko" title="心" onclick="burst()">祝</div>
+  <div class="hanko" title="心" onclick="onSealClick()">祝</div>
   <p class="hanko-label">心を込めて</p>
 </div>
 
@@ -294,6 +294,51 @@
       document.body.appendChild(p);
       setTimeout(() => p.remove(), (dur + 1) * 1000);
     }
+  }
+
+  // capture the card and download PNG + PDF bundled in a ZIP
+  async function downloadCard() {
+    const hanko = document.querySelector('.hanko');
+    const card = document.querySelector('.card');
+    const originalText = hanko.textContent;
+    hanko.textContent = '…';
+    hanko.style.pointerEvents = 'none';
+    try {
+      const canvas = await html2canvas(card, { scale: 2, backgroundColor: null });
+      const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+      const { jsPDF } = window.jspdf;
+      const pageWidth = card.offsetWidth;
+      const pageHeight = card.offsetHeight;
+      const doc = new jsPDF({ unit: 'px', format: [pageWidth, pageHeight] });
+      const imgData = canvas.toDataURL('image/png');
+      doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      const pdfBlob = doc.output('blob');
+
+      const zip = new JSZip();
+      zip.file('donia-birthday-card.png', pngBlob);
+      zip.file('donia-birthday-card.pdf', pdfBlob);
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'donia-birthday-card.zip';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Card download failed:', err);
+    } finally {
+      hanko.textContent = originalText;
+      hanko.style.pointerEvents = '';
+    }
+  }
+
+  function onSealClick() {
+    burst();
+    downloadCard();
   }
 </script>
 
