@@ -287,7 +287,7 @@
       // capture from the top and restore the user's scroll position after.
       window.scrollTo(0, 0);
       const canvas = await html2canvas(card, {
-        scale: 2,
+        scale: 4,
         backgroundColor: null,
         scrollX: 0,
         scrollY: 0,
@@ -318,8 +318,11 @@
       const pageWidth = card.offsetWidth;
       const pageHeight = card.offsetHeight;
       const doc = new jsPDF({ unit: 'px', format: [pageWidth, pageHeight] });
-      const imgData = canvas.toDataURL('image/png');
-      doc.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      // the PNG stays fully lossless; the PDF embeds a high-quality JPEG
+      // instead, since a lossless PNG at 4x scale would make the PDF huge
+      // (tens of MB) for a visually imperceptible difference.
+      const jpegData = canvas.toDataURL('image/jpeg', 0.92);
+      doc.addImage(jpegData, 'JPEG', 0, 0, pageWidth, pageHeight);
       const pdfBlob = doc.output('blob');
 
       const zip = new JSZip();
