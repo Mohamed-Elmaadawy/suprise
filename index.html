@@ -209,31 +209,7 @@
 <body>
 
 <div class="card">
-  <svg class="branch" viewBox="0 0 180 160" xmlns="http://www.w3.org/2000/svg">
-    <path d="M180 10 C130 30, 90 60, 60 110" stroke="#6b4f3a" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <path d="M120 45 C105 60, 95 75, 92 92" stroke="#6b4f3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <g fill="#e8a0b4">
-      <circle cx="60" cy="110" r="10"/>
-      <circle cx="92" cy="92" r="8"/>
-      <circle cx="120" cy="45" r="9"/>
-      <circle cx="75" cy="78" r="7"/>
-      <circle cx="145" cy="28" r="7"/>
-    </g>
-    <g fill="#f6cfd8">
-      <circle cx="60" cy="110" r="5"/>
-      <circle cx="92" cy="92" r="4"/>
-      <circle cx="120" cy="45" r="4.5"/>
-      <circle cx="75" cy="78" r="3.5"/>
-      <circle cx="145" cy="28" r="3.5"/>
-    </g>
-    <g fill="#c9a86a">
-      <circle cx="60" cy="110" r="1.8"/>
-      <circle cx="92" cy="92" r="1.5"/>
-      <circle cx="120" cy="45" r="1.6"/>
-      <circle cx="75" cy="78" r="1.3"/>
-      <circle cx="145" cy="28" r="1.3"/>
-    </g>
-  </svg>
+  <img class="branch" alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTYwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE2MCI+PHBhdGggZD0iTTE4MCAxMCBDMTMwIDMwLCA5MCA2MCwgNjAgMTEwIiBzdHJva2U9IiM2YjRmM2EiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTEyMCA0NSBDMTA1IDYwLCA5NSA3NSwgOTIgOTIiIHN0cm9rZT0iIzZiNGYzYSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZyBmaWxsPSIjZThhMGI0Ij48Y2lyY2xlIGN4PSI2MCIgY3k9IjExMCIgcj0iMTAiLz48Y2lyY2xlIGN4PSI5MiIgY3k9IjkyIiByPSI4Ii8+PGNpcmNsZSBjeD0iMTIwIiBjeT0iNDUiIHI9IjkiLz48Y2lyY2xlIGN4PSI3NSIgY3k9Ijc4IiByPSI3Ii8+PGNpcmNsZSBjeD0iMTQ1IiBjeT0iMjgiIHI9IjciLz48L2c+PGcgZmlsbD0iI2Y2Y2ZkOCI+PGNpcmNsZSBjeD0iNjAiIGN5PSIxMTAiIHI9IjUiLz48Y2lyY2xlIGN4PSI5MiIgY3k9IjkyIiByPSI0Ii8+PGNpcmNsZSBjeD0iMTIwIiBjeT0iNDUiIHI9IjQuNSIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iNzgiIHI9IjMuNSIvPjxjaXJjbGUgY3g9IjE0NSIgY3k9IjI4IiByPSIzLjUiLz48L2c+PGcgZmlsbD0iI2M5YTg2YSI+PGNpcmNsZSBjeD0iNjAiIGN5PSIxMTAiIHI9IjEuOCIvPjxjaXJjbGUgY3g9IjkyIiBjeT0iOTIiIHI9IjEuNSIvPjxjaXJjbGUgY3g9IjEyMCIgY3k9IjQ1IiByPSIxLjYiLz48Y2lyY2xlIGN4PSI3NSIgY3k9Ijc4IiByPSIxLjMiLz48Y2lyY2xlIGN4PSIxNDUiIGN5PSIyOCIgcj0iMS4zIi8+PC9nPjwvc3ZnPgo=" />
 
   <p class="eyebrow">✿ 特別な日 ✿</p>
 
@@ -247,7 +223,7 @@
   </div>
 
   <p class="message-en">
-    To dearest Donia — may this new year of your life bloom like the sakura
+    To my dearest Donia — may this new year of your life bloom like the sakura
     and shine like the stars. And above all, may this finally be the year
     you finish that master's degree... I believe in you. Mostly. 😂🎓
   </p>
@@ -301,15 +277,39 @@
     const hanko = document.querySelector('.hanko');
     const card = document.querySelector('.card');
     const originalText = hanko.textContent;
+    const savedScrollX = window.scrollX;
+    const savedScrollY = window.scrollY;
     hanko.textContent = '…';
     hanko.style.pointerEvents = 'none';
     try {
+      // html2canvas mis-renders (blank/cropped) when the page is scrolled,
+      // since its element-position math assumes an unscrolled document —
+      // capture from the top and restore the user's scroll position after.
+      window.scrollTo(0, 0);
       const canvas = await html2canvas(card, {
         scale: 2,
         backgroundColor: null,
+        scrollX: 0,
+        scrollY: 0,
+        // the card is taller than one screen; without this, html2canvas's
+        // internal clone is sized to the viewport and silently clips
+        // everything below the first screenful.
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
         onclone: (clonedDoc) => {
           const clonedHanko = clonedDoc.querySelector('.hanko');
           if (clonedHanko) clonedHanko.textContent = originalText;
+          // html2canvas renders this clone in a fresh document, which
+          // restarts every CSS entrance animation (fadeUp/stamp) from its
+          // "from" keyframe (opacity:0) — freeze them at their finished
+          // state so the capture matches what the user actually sees.
+          const clonedCard = clonedDoc.querySelector('.card');
+          if (clonedCard) {
+            clonedCard.style.animation = 'none';
+            clonedCard.querySelectorAll('*').forEach(el => {
+              el.style.animation = 'none';
+            });
+          }
         }
       });
       const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -340,6 +340,7 @@
     } finally {
       hanko.textContent = originalText;
       hanko.style.pointerEvents = '';
+      window.scrollTo(savedScrollX, savedScrollY);
     }
   }
 
